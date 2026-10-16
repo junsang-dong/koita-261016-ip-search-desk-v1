@@ -1,0 +1,42 @@
+{% if message %}
+<p class="muted">{{ message }}</p>
+{% elif error %}
+<div class="error-banner">
+  <strong>비교에 실패했습니다 ({{ error.status }})</strong>
+  <p>{{ error.message }}{% if error.result_code %} · 코드 {{ error.result_code }}{% endif %}</p>
+  {% if hint %}<p>{{ hint }}</p>{% endif %}
+</div>
+{% include 'partials/usage_oob.html' %}
+{% else %}
+<table class="compare">
+  <thead><tr><th scope="col">구분</th><th scope="col">건수</th><th scope="col">설명</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">조건 A</th><td>{{ r.count_a }}</td><td>{{ qa.keyword }}</td></tr>
+    <tr><th scope="row">조건 B</th><td>{{ r.count_b }}</td><td>{{ qb.keyword }}</td></tr>
+    <tr><th scope="row">A∩B (공통)</th><td>{{ r.both | length }}</td><td>두 검색에 모두 나온 문헌</td></tr>
+    <tr><th scope="row">A만</th><td>{{ r.only_a | length }}</td><td>A에만 나온 문헌</td></tr>
+    <tr><th scope="row">B만</th><td>{{ r.only_b | length }}</td><td>B에만 나온 문헌</td></tr>
+  </tbody>
+</table>
+<p class="muted">
+  출처: {{ r.run_a.source.label }} · 조회 {{ r.run_a.executed_at.strftime('%Y-%m-%d %H:%M') }}
+  · 가져온 문헌 A {{ r.fetched_a }}건 / B {{ r.fetched_b }}건
+</p>
+{% if r.truncated %}
+<p class="warn-note">⚠ 결과가 많아 조건당 최대 200건까지만 비교했습니다. A∩B·A만·B만은 가져온 범위 안의 값(하한)이며, A·B 건수는 전체 건수입니다.</p>
+{% endif %}
+{% for label, items in (('A∩B 공통', r.both), ('A만', r.only_a), ('B만', r.only_b)) %}
+<details>
+  <summary>{{ label }} {{ items | length }}건</summary>
+  <ul class="records">
+    {% for x in items %}
+    <li class="record">
+      <span class="num">{{ x.display_number }}</span>
+      <a href="#" class="title" hx-get="/ui/patents/{{ x.application_number }}" hx-target="#detail" hx-swap="innerHTML">{{ x.title }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</details>
+{% endfor %}
+{% include 'partials/usage_oob.html' %}
+{% endif %}

@@ -1,0 +1,1 @@
+<div id="usage-note" role="status" class="usage-note usage-{{ u.level }}"{% if oob %} hx-swap-oob="true"{% endif %}>{% if u.level == 'warn' %}⚠ 이번 달 호출 사용량이 80%에 도달했습니다 ({{ u.used }}/{{ '{:,}'.format(u.limit) }}). 같은 조건은 캐시를 사용하세요.{% elif u.level == 'blocked' %}⛔ 이번 달 호출 한도({{ '{:,}'.format(u.limit) }}건)에 도달해 라이브 호출을 차단했습니다. IPDESK_MODE=sample 로 바꿔 샘플 모드로 계속하세요.{% endif %}</div>

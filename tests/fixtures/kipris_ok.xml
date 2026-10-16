@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 가정한 응답 구조(명세 9.3). 실제 KIPRIS 응답을 마스킹해 받으면 이 파일을 교체한다. -->
+<response>
+  <header>
+    <requestMsgID/>
+    <responseTime>20261016130522</responseTime>
+    <resultCode>00</resultCode>
+    <resultMsg>NORMAL SERVICE.</resultMsg>
+  </header>
+  <body>
+    <items>
+      <item>
+        <applicationNumber>10-2024-0001234</applicationNumber>
+        <inventionTitle>고하중 로봇 액추에이터용 감속 장치</inventionTitle>
+        <applicantName>주식회사 예시로보틱스</applicantName>
+        <applicationDate>20240103</applicationDate>
+        <registerStatus>공개</registerStatus>
+        <ipcNumber>F16H 1/32|B25J 9/10</ipcNumber>
+        <astrtCont>고하중 환경에서 토크를 전달하는 2단 감속 구조에 관한 것이다.</astrtCont>
+        <openNumber>10-2025-0001734</openNumber>
+        <openDate>20250103</openDate>
+        <drawing>https://example.invalid/drawing/1.png</drawing>
+      </item>
+      <item>
+        <applicationNumber>1020230001037</applicationNumber>
+        <inventionTitle>하모닉 감속기를 구비한 로봇 관절 액추에이터</inventionTitle>
+        <applicantName>한빛모션 주식회사|대성정밀 주식회사</applicantName>
+        <applicationDate>2023.05.18</applicationDate>
+        <registerStatus>등록</registerStatus>
+        <ipcNumber>F16H 49/00|B25J 17/00</ipcNumber>
+        <astrtCont>플렉스플라인과 서큘러스플라인을 갖는 하모닉 감속기.</astrtCont>
+        <registerNumber>10-2025-0001937</registerNumber>
+        <registerDate>20250518</registerDate>
+      </item>
+      <item>
+        <applicationNumber>20-2020-0000555</applicationNumber>
+        <inventionTitle>감속기 백래시 저감 장치</inventionTitle>
+        <applicantName>대성정밀 주식회사</applicantName>
+        <applicationDate>20200417</applicationDate>
+        <registerStatus>등록</registerStatus>
+        <ipcNumber>F16H 55/17</ipcNumber>
+        <astrtCont>스프링 예압으로 기어 유격을 줄이는 고안.</astrtCont>
+      </item>
+    </items>
+    <count>
+      <numOfRows>20</numOfRows>
+      <pageNo>1</pageNo>
+      <totalCount>128</totalCount>
+    </count>
+  </body>
+</response>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <header><resultCode>00</resultCode><resultMsg>NORMAL SERVICE.</resultMsg></header>
+  <body>
+    <item>
+      <biblioSummaryInfoArray>
+        <biblioSummaryInfo>
+          <applicationNumber>1020240001234</applicationNumber>
+          <inventionTitle>고하중 로봇 액추에이터용 감속 장치</inventionTitle>
+          <applicationDate>20240103</applicationDate>
+          <registerStatus>공개</registerStatus>
+          <openNumber>10-2025-0001734</openNumber>
+          <openDate>20250103</openDate>
+        </biblioSummaryInfo>
+      </biblioSummaryInfoArray>
+      <abstractInfoArray>
+        <abstractInfo><astrtCont>초록 전문입니다.</astrtCont></abstractInfo>
+      </abstractInfoArray>
+      <applicantInfoArray>
+        <applicantInfo><applicantName>주식회사 예시로보틱스</applicantName></applicantInfo>
+      </applicantInfoArray>
+    </item>
+  </body>
+</response>

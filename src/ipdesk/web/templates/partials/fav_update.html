@@ -1,0 +1,6 @@
+{% if view == 'favorites' %}{% include 'partials/favorites_list.html' %}{% endif %}
+<span id="star-{{ n }}" hx-swap-oob="true">{{ '★ 담김' if fav else '☆ 담기' }}</span>
+<span id="fav-count" hx-swap-oob="true">{{ fav_count }}</span>
+{% if detail and r %}
+<aside class="panel" id="detail" hx-swap-oob="true" aria-label="상세">{% include 'partials/detail.html' %}</aside>
+{% endif %}

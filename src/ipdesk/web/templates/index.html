@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BCR IP Search Desk</title>
+  <link rel="stylesheet" href="/static/pico.min.css">
+  <link rel="stylesheet" href="/static/app.css">
+  <script defer src="/static/htmx.min.js"></script>
+  <script defer src="/static/alpine.min.js"></script>
+</head>
+<body x-data="{ tab: 'results' }">
+  <header class="topbar">
+    <strong>BCR IP Search Desk</strong>
+    {% if mode.value == 'kipris' %}
+      <span class="badge badge-live">● 라이브 KIPRIS</span>
+    {% else %}
+      <span class="badge badge-sample">● 샘플 모드</span>
+    {% endif %}
+    {% include 'partials/usage_span.html' %}
+  </header>
+  {% include 'partials/usage_note.html' %}
+
+  <div class="layout">
+    <aside class="panel" aria-label="검색 조건">
+      <form id="search-form" hx-post="/ui/search" hx-target="#results" hx-swap="innerHTML"
+            hx-indicator="#busy">
+        <label for="keyword">키워드</label>
+        <input id="keyword" name="keyword" type="search" placeholder="예: 액추에이터 AND 감속기" autofocus>
+        <small class="notice">입력한 검색어는 KIPRIS로 전송됩니다. 미공개 발명의 핵심 표현은 일반 용어로 바꿔 입력하세요.</small>
+
+        <details>
+          <summary>항목별 검색</summary>
+          <label for="title">발명의 명칭</label>
+          <input id="title" name="title">
+          <label for="applicant">출원인</label>
+          <input id="applicant" name="applicant">
+          <label for="ipc">IPC</label>
+          <input id="ipc" name="ipc" placeholder="예: F16H 1/32">
+          <label for="date_from">출원일 (시작)</label>
+          <input id="date_from" name="date_from" type="date">
+          <label for="date_to">출원일 (끝)</label>
+          <input id="date_to" name="date_to" type="date">
+        </details>
+
+        <fieldset class="rights">
+          <label><input type="checkbox" name="include_patent" value="1" checked> 특허</label>
+          <label><input type="checkbox" name="include_utility" value="1" checked> 실용신안</label>
+        </fieldset>
+
+        <label for="page_size">페이지당 건수</label>
+        <select id="page_size" name="page_size"
+                hx-post="/ui/search" hx-include="#search-form" hx-target="#results" hx-trigger="change">
+          {% for n in page_sizes %}<option value="{{ n }}" {{ 'selected' if n == 20 }}>{{ n }}</option>{% endfor %}
+        </select>
+        <label class="inline-check"><input type="checkbox" name="refresh" value="1"> 캐시 무시(새로 조회)</label>
+        <input type="hidden" name="page" value="1">
+
+        <button type="submit">검색</button>
+        <span id="busy" class="htmx-indicator" aria-live="polite">검색 중…</span>
+      </form>
+
+      <h4>검색 이력</h4>
+      <div id="history">{% include 'partials/history.html' %}</div>
+    </aside>
+
+    <main class="panel" aria-label="검색 결과">
+      <nav class="tabs" role="tablist">
+        <button type="button" role="tab" :aria-selected="tab === 'results'"
+                :class="{ active: tab === 'results' }" @click="tab = 'results'">검색 결과</button>
+        <button type="button" role="tab" :aria-selected="tab === 'favorites'"
+                :class="{ active: tab === 'favorites' }"
+                @click="tab = 'favorites'"
+                hx-get="/ui/favorites" hx-target="#fav-list" hx-trigger="click">
+          즐겨찾기 <span id="fav-count">{{ fav_count }}</span>
+        </button>
+        <button type="button" role="tab" :aria-selected="tab === 'compare'"
+                :class="{ active: tab === 'compare' }" @click="tab = 'compare'">A/B 비교</button>
+      </nav>
+
+      <div id="banner" role="alert"></div>
+      <section x-show="tab === 'results'">
+        <div id="results"><p class="muted">키워드를 입력하고 검색하세요. 키 없이도 샘플 문헌으로 같은 흐름을 사용할 수 있습니다.</p></div>
+      </section>
+      <section x-show="tab === 'favorites'" x-cloak>
+        <p><a href="/api/export.csv?scope=favorites" download role="button" class="secondary outline csv-btn">즐겨찾기 CSV 내보내기</a></p>
+        <div id="fav-list"></div>
+      </section>
+      <section x-show="tab === 'compare'" x-cloak>
+        <form hx-post="/ui/compare" hx-target="#compare-result" hx-indicator="#busy-compare">
+          <label for="keyword_a">조건 A (예: 넓은 조건)</label>
+          <input id="keyword_a" name="keyword_a" placeholder="액추에이터 OR 감속기">
+          <label for="keyword_b">조건 B (예: 좁은 조건)</label>
+          <input id="keyword_b" name="keyword_b" placeholder="액추에이터 AND 감속기 AND 하중">
+          <fieldset class="rights">
+            <label><input type="checkbox" name="include_patent" value="1" checked> 특허</label>
+            <label><input type="checkbox" name="include_utility" value="1" checked> 실용신안</label>
+            <label><input type="checkbox" name="refresh" value="1"> 캐시 무시</label>
+          </fieldset>
+          <button type="submit">비교</button>
+          <span id="busy-compare" class="htmx-indicator" aria-live="polite">비교 중…</span>
+        </form>
+        <div id="compare-result"></div>
+      </section>
+    </main>
+
+    <aside class="panel" aria-label="상세" id="detail">
+      <p class="muted">목록에서 문헌을 선택하면 상세가 표시됩니다.</p>
+    </aside>
+  </div>
+</body>
+</html>

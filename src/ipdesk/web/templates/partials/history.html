@@ -1,0 +1,19 @@
+{% if runs %}
+<ul class="history">
+  {% for run in runs %}
+  <li>
+    <button type="button" class="link" hx-post="/ui/runs/{{ run.id }}/rerun" hx-target="#results"
+            title="{{ run.query.describe() }}">
+      <span class="time">{{ run.executed_at.strftime('%m-%d %H:%M') }}</span>
+      <span class="what">{{ run.query.keyword or run.query.title or run.query.applicant or run.query.ipc or '(조건 없음)' }}</span>
+      <span class="cnt">
+        {% if run.status in ('ok', 'empty') %}{{ run.total_count }}건{% else %}오류: {{ run.status }}{% endif %}
+        · {{ run.source.label }}
+      </span>
+    </button>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="muted">아직 검색 이력이 없습니다.</p>
+{% endif %}

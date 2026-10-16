@@ -1,0 +1,25 @@
+<h3>{{ r.display_number }}</h3>
+<p><strong>{{ r.title }}</strong></p>
+<dl class="kv">
+  <dt>권리 구분</dt><dd>{{ r.right_type.label }}</dd>
+  <dt>상태</dt><dd>{{ r.status or '-' }}</dd>
+  <dt>출원인</dt><dd>{{ r.applicants | join(', ') or '-' }}</dd>
+  <dt>출원일</dt><dd>{{ r.application_date or '-' }}</dd>
+  <dt>IPC</dt><dd>{{ r.ipc_codes | join(', ') or '-' }}</dd>
+  <dt>공개번호</dt><dd>{{ r.open_number or '-' }}{% if r.open_date %} ({{ r.open_date }}){% endif %}</dd>
+  <dt>등록번호</dt><dd>{{ r.register_number or '-' }}{% if r.register_date %} ({{ r.register_date }}){% endif %}</dd>
+</dl>
+<h4>초록</h4>
+<p>{{ r.abstract or '초록 정보가 없습니다.' }}</p>
+<h4>대표도면</h4>
+{% if r.drawing_url %}<img src="{{ r.drawing_url }}" alt="대표도면" class="drawing">{% else %}<p class="muted">대표도면이 없습니다.</p>{% endif %}
+
+<form hx-post="/ui/favorites/{{ r.application_number }}/note" hx-swap="none">
+  <label for="note">메모</label>
+  <textarea id="note" name="note" rows="3">{{ fav.note if fav else '' }}</textarea>
+  <button type="submit">{{ '메모 저장' if fav else '메모와 함께 즐겨찾기 추가' }}</button>
+</form>
+<form hx-post="/ui/favorites/{{ r.application_number }}/toggle" hx-swap="none">
+  <input type="hidden" name="from_detail" value="1">
+  <button type="submit" class="secondary">{{ '★ 즐겨찾기 해제' if fav else '☆ 즐겨찾기에 담기' }}</button>
+</form>

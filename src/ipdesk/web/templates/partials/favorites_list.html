@@ -1,0 +1,23 @@
+{% if items %}
+<ul class="records">
+  {% for f, r in items %}
+  <li class="record">
+    <div class="rec-top">
+      <span class="num">{{ r.display_number }}</span>
+      <span class="chip">{{ r.right_type.label }}</span>
+      <span class="chip">{{ r.status or '상태 미상' }}</span>
+      <form class="inline" hx-post="/ui/favorites/{{ r.application_number }}/toggle" hx-target="#fav-list">
+        <input type="hidden" name="view" value="favorites">
+        <button type="submit" class="star">★ 해제</button>
+      </form>
+    </div>
+    <a href="#" class="title" hx-get="/ui/patents/{{ r.application_number }}" hx-target="#detail"
+       hx-swap="innerHTML">{{ r.title }}</a>
+    <div class="meta">{{ r.applicants | join(', ') }} · 출원 {{ r.application_date or '-' }}</div>
+    {% if f.note %}<p class="note">메모: {{ f.note }}</p>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="muted">즐겨찾기가 비어 있습니다. 검색 결과에서 ☆ 담기를 눌러 추가하세요.</p>
+{% endif %}

@@ -1,0 +1,11 @@
+<div class="error-banner">
+  <strong>검색에 실패했습니다 ({{ outcome.error.status }})</strong>
+  <p>{{ outcome.error.message }}{% if outcome.error.result_code %} · 코드 {{ outcome.error.result_code }}{% endif %}</p>
+  {% if hint %}<p>{{ hint }}</p>{% endif %}
+  <p class="muted">이 오류는 결과 0건이 아닙니다. 아래 이전 결과는 참고용으로 흐리게 남겨 둔 것입니다.</p>
+  {% if retryable %}
+  <button type="button" hx-post="/ui/runs/{{ outcome.run.id }}/rerun" hx-target="#results">다시 시도</button>
+  {% endif %}
+</div>
+<div id="history" hx-swap-oob="innerHTML">{% include 'partials/history.html' %}</div>
+{% include 'partials/usage_oob.html' %}
